@@ -14,7 +14,7 @@ defmodule Split.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger], mod: {Split, []}]
+    [applications: [:logger, :ecto], mod: {Split, []}]
     #[mod: {Split, []}]
   end
 
@@ -28,6 +28,9 @@ defmodule Split.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [
+      {:ecto, "~>2.0"},
+      {:mariaex, "~>0.7"}
+    ]
   end
 end

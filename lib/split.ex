@@ -26,25 +26,35 @@ defmodule Split do
   defp loop_acceptor(socket) do
     {:ok, client_socket} = :gen_tcp.accept(socket)
     {:ok, pid} = Task.Supervisor.start_child(Split.TaskSupervisor, fn -> serve(client_socket) end)
+    #{:ok, pid} = Task.Supervisor.start_child(Split.TaskSupervisor, fn -> Echo.serve(client_socket) end)
     :ok = :gen_tcp.controlling_process(client_socket, pid)
     loop_acceptor(socket)
   end
 
-  def serve(socket) do
-    socket
-    |> read_line()
-    |> write_line(socket)
 
-    Logger.info "hhhhhhh"
+  def serve(socket) do
+    command = socket |> Server.read_line() |> String.trim()
+    #{:ok, command} = :gen_tcp.recv(socket, 0)
+    case command do
+      "echo" -> Echo.serve(socket)
+      "db" -> Db.serve(socket)
+      _ -> Logger.info ("LOG: " <> command <> ".")
+      #|> write_line(socket)
+      
+    end
+
+    #Logger.info "hhhhhhh"
     serve(socket)
   end
 
-  defp read_line(socket) do
-    {:ok, data} = :gen_tcp.recv(socket, 0)
-    data
-  end
 
-  defp write_line(line, socket) do
-    :gen_tcp.send(socket, line)
-  end
+  #  def serve(socket) do
+  #    socket
+  #    |> read_line()
+  #    |> write_line(socket)
+  #
+  #    Logger.info "hhhhhhh"
+  #    serve(socket)
+  #  end
+  #
 end
