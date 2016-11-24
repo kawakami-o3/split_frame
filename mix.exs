@@ -14,7 +14,7 @@ defmodule Split.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger, :ecto], mod: {Split, []}]
+    [applications: [:logger, :ecto, :memcache_client], mod: {Split, []}]
     #[mod: {Split, []}]
   end
 
@@ -30,7 +30,8 @@ defmodule Split.Mixfile do
   defp deps do
     [
       {:ecto, "~>2.0"},
-      {:mariaex, "~>0.7"}
+      {:mariaex, "~>0.7"},
+      {:memcache_client, "~>1.1.0"}
     ]
   end
 end

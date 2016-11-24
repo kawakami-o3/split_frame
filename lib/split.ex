@@ -38,6 +38,7 @@ defmodule Split do
     case command do
       "echo" -> Echo.serve(socket)
       "db" -> Db.serve(socket)
+      "ca" -> Cache.serve(socket)
       _ -> Logger.info ("LOG: " <> command <> ".")
       #|> write_line(socket)
       
